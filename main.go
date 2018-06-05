@@ -7,7 +7,7 @@ import (
 	"log"
 	"net/http"
 
-	"orolia/orfiles"
+	"orfiles/subfiles"
 )
 
 type page struct {
@@ -20,8 +20,8 @@ type conf struct {
 	FileType string `json:"filetype"`
 }
 
-var filesConf *orfiles.StFilesCnfg
-var fileExec *orfiles.StFile
+var filesConf *subfiles.StFilesCnfg
+var fileExec *subfiles.StFile
 var config conf
 
 func _checkErr(err error) {
@@ -65,8 +65,8 @@ func execHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	filesConf = new(orfiles.StFilesCnfg)
-	fileExec = new(orfiles.StFile)
+	filesConf = new(subfiles.StFilesCnfg)
+	fileExec = new(subfiles.StFile)
 	byt, err := ioutil.ReadFile("./config.json")
 	_checkErr(err)
 	err = json.Unmarshal(byt, &config)
