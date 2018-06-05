@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+        <style>
+            select {width: 340px;height:130px;}
+        </style>    
+		<meta charset="utf-8">
+		<title>"Trends"</title>
+	</head>
+	<body>
+        <form action="/delete" enctype="multipart/form-data" method="POST">
+            <input type="hidden" id="delf" name="delf" />
+            <p><select id="select" multiple >
+            <script>
+                var objSel = document.getElementById("select")
+                var names = "{{.Text}}";
+                var arr = names.split(',');
+                for (var i = 0;i < arr.length;i++) {
+                    objSel.options[i] = new Option(arr[i],arr[i])
+                }
+                function f(){
+                    var a = document.getElementById('select').value;
+                    document.getElementById("delf").value = a;
+                }
+            </script>
+            </select>
+        </p>
+        <input type = "submit" name="del" value="Удалить файл" onclick="f()">
+        </form>
+        <form action="/upload" enctype="multipart/form-data" method="POST">
+            <input type="file" name="New file" />
+            <input type="submit" name="button" value="Загрузить файл" />
+        </form>
+        <form action="/exec" method="POST">
+            <input type="hidden" id="execf" name="execf" />
+            <script>
+            var msg = "{{.Msg}}";
+            var test = JSON.parse(msg)
+            function f1(){
+                var a1 = document.getElementById('select').value;
+                document.getElementById("execf").value = a1;
+            }
+            </script>
+            <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+            <script type="text/javascript">
+                google.charts.load("current", {packages:["corechart"]});
+                google.charts.setOnLoadCallback(drawChart);
+                function drawChart() {
+                    var data = google.visualization.arrayToDataTable(test);
+                    var options = {
+                        legend: 'none',
+                        curveType: 'function',
+                        pointSize: 2,
+                    };
+                    var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+                    chart.draw(data, options);
+                }
+            </script>
+            <input type = "submit" name="exec" value="Построить график" onclick="f1()">
+            <div id="chart_div" style="width: 1200px; height: 500px;"></div>
+        </form>
+	</body>
+</html>
